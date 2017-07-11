@@ -1,0 +1,149 @@
+<script>
+	/*
+	(function(){
+		var o = {
+			a: 7,
+			get b(){return this.a + 1},
+			set c(x){this.a = x/2}
+		};
+
+		console.log(o.a);
+		console.log(o.b);
+		o.c = 50;
+		console.log(o.a);
+
+	})();
+	*/
+
+	/*
+	(function(){
+		var o = null;
+		o = Object.create(Object.prototype, 
+			{
+				bar: {
+					get: function() {
+						return this.a;
+					},
+					set: function(val) {
+						console.log("Setting `o.bar` to ", val);
+						this.a = val;
+					},
+					configurable: true
+				}
+			} // 第二个参数
+		);
+
+		o.a = 10;
+		console.log(o.bar);
+		o.bar = 12;
+		console.log(o);
+	})();
+
+	(function(){
+		var o = {a:10};
+		o = Object.create(o,
+			{
+				bar:{
+					get: function() {
+						return this.a;
+					},
+					set: function(val) {
+						console.log("Setting `o.bar` to ", val);
+						this.a = val;
+					},
+					configurable: true
+				}
+			}
+		);
+
+		console.log(o.bar);
+		o.bar = 12;
+		console.log(o);
+	})();
+	*/
+	
+	/*
+	(function(){
+		var o = {a:1};
+		Object.defineProperty(o, 'b', {
+			get: function() {
+				return this.a;
+			},
+			set: function(val) {
+				this.a = val;
+			},
+			configurable: true
+		});
+
+		console.log(o);
+		o.b = 2;
+		console.log(o.b);
+	})();
+	*/
+
+	/*
+	(function(){
+		var obj = {a: 1, b: 'string'};
+		Object.defineProperties(obj, {
+			A: {
+				get: function() {return this.a+1},
+				set: function(val) {this.a = val}
+			},
+			B: {
+				get: function() {return this.b+2},
+				set: function(val) {this.b = val}
+			}
+		});
+
+		console.log(obj);
+		console.log(obj.A);
+		console.log(obj.B);
+		obj.A = 3;
+		obj.B = 'Hello';
+		console.log(obj.A);
+		console.log(obj.B);
+	})();
+	*/
+	/*
+	(function(){
+		var obj = {}; // 声明一个空对象
+		Object.defineProperty(obj, 'key', {
+			value:"static"
+			// 没有设置enumerable 使用默认值false
+			// 没有设置configurable 使用默认值false
+			// 没有设置writable 使用默认值false
+		});
+
+		console.log(obj.key);
+		obj.key = "new";
+		console.log(obj.key);
+		obj.a = 1;
+		for(var item in obj) {
+			console.log(item)
+		}
+	})();
+	*/
+
+	(function(){
+		var obj = {};
+
+		// 回收同一对象，减少内存浪费
+		function withValue(value) {
+			var d = withValue.d ||(
+				withValue.d = {
+					enumberable: false,
+					configurable: false,
+					writable: false,
+					value:null
+				}
+			);
+
+			d.value = value;
+			return d;
+		}
+
+		Object.defineProperty(obj, "key", withValue('static'));
+		obj.key = 'abc';
+		console.log(obj)
+	})();
+</script>
