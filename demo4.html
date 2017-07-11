@@ -1,0 +1,129 @@
+<script src="./vue.js"></script>
+<div id="ex">
+    {{ message.split('').reverse().join('') }}
+</div>
+
+<div id="example">
+    <p>Origin message: {{ message }}</p>
+    <p>Computed reversed message: "{{ reversedMessage }}"</p>
+    <p>Method reversed message: "{{ reverse() }}"</p>
+    <p>Method reversed message: "{{ time() }}"</p>
+</div>
+
+<div id="demo">{{ fullName }}</div>
+
+<div id="watch-example">
+    <p>
+        Ask a yes/no question:
+        <input v-model="question">
+    </p>
+    <p>{{ answer }}</p>
+</div>
+
+<script src="https://unpkg.com/axios@0.12.0/dist/axios.min.js"></script>
+<script src="https://unpkg.com/lodash@4.13.1/lodash.min.js"></script>
+<script>
+    // 传统的模板内计算,显得很乱
+    var example = new Vue({
+        el: '#ex',
+        data: {
+            message: '今天是星期二'
+        }
+    });
+
+    // 计算属性与函数；计算属性在关联的属性值改变时才会相应变化（响应式依赖），而函数只要页面重新渲染就会执行函数。
+    var vm = new Vue({
+        el: '#example',
+        data: {
+            message: 'Hello'
+        },
+        methods: {
+            reverse: function() {
+                return this.message.split('').reverse().join('');
+            },
+            time: function() {
+                return Date.now();
+            }
+        },
+        computed: {
+            reversedMessage: function() {
+                return this.message.split('').reverse().join('');
+            }
+        }
+    });
+
+    // Computed属性与Watched属性
+    /*
+    var demo = new Vue({
+        el: '#demo',
+        data: {
+            firstName: 'Foo',
+            lastName: 'Bar',
+            fullName: 'Foo Bar'
+        },
+        watch: {
+            firstName: function(val) {
+                this.fullName = val + ' ' + this.lastName;
+            },
+            lastName: function(val) {
+                this.fullName = this.firstName + ' ' + val;
+            }
+        }
+    });
+    */
+    // 使用计算属性代替watch
+    var vm = new Vue({
+        el: '#demo',
+        data: {
+            firstName: 'Foo',
+            lastName: 'Bar'
+        },
+        computed: {
+            fullName: {
+                get: function() {
+                    return this.firstName + ' ' + this.lastName;
+                },
+                set: function(newValue) {
+                    var names = newValue.split(' ');
+                    this.firstName = names[0];
+                    this.lastName = names[names.length - 1];
+                }
+            }
+        }
+    });
+
+    // 观察Watchers（异步执行）
+    var watchExampleVM = new Vue({
+        el: '#watch-example',
+        data: {
+            question: '',
+            answer: 'I cannot give you an answer until you ask a question!'
+        },
+        watch: {
+            question: function(newQuestion) {
+                this.answer = 'Waiting for you to stop typing...';
+                this.getAnswer();
+            },
+        },
+        methods: {
+            getAnswer: _.debounce(
+                function() {
+                    if (this.question.indexOf("?") === -1) {
+                        this.answer = 'Questions usually contain a question mark. ;-)';
+                        return;
+                    }
+                    this.answer = 'Thinking...';
+                    var vm = this;
+                    axios.get('https:/yesno.wtf/api/')
+                        .then(function(response) {
+                            vm.answer = _.capitalize(response.data.answer);
+                        })
+                        .catch(function(error) {
+                            vm.answer = "Error! Could not reach the API. " + error
+                        })
+                },
+                500
+            )
+        }
+    });
+</script>
