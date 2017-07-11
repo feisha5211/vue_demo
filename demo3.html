@@ -1,0 +1,72 @@
+<script src="./vue.js"></script>
+
+<span v-once id="span1">{{ msg }}</span>
+
+<div v-html="rawHtml" v-bind:id="dynamicId"></div>
+
+<button v-bind:disabled="isButtonDisabled" v-on:click="clickButton" v-bind:id="'list-' + id">{{ok ? 'Yes' : 'No'}}</button>
+
+<form action="" v-on:submit.prevent="onSubmit">
+    <button type="submit">提交</button>
+</form>
+
+<div id="div2" v-bind:id="rawId | capitalize"></div>
+
+<script>
+    // 仅显示一次,以后更新也不会改变(v-once)
+    var span1 = new Vue({
+        el: '#span1',
+        data: {
+            msg: '1223'
+        }
+    });
+
+    // 输出原始html(v-html, innerHtml形式)
+    var div1 = new Vue({
+        el: 'div',
+        data: {
+            'rawHtml': '<span style="color:red">11111223334</span>',
+            'dynamicId': 'div-2',
+        }
+    });
+
+    // 绑定布尔型属性
+    var btn = new Vue({
+        el: 'button',
+        methods: {
+            clickButton: function() {
+                console.log(this)
+            }
+        },
+        data: {
+            isButtonDisabled: false,
+            id: 1,
+            ok: true
+        }
+    });
+
+    // 修饰符 .prevent 阻止默认事件 同event.preventDefault()
+    var form = new Vue({
+        el: 'form',
+        methods: {
+            onSubmit: function() {
+                alert(1);
+            },
+        }
+    });
+
+    // 过滤器，将常见的文本格式化
+    var div2 = new Vue({
+        el: '#div2',
+        data: {
+            rawId: 'abc'
+        },
+        filters: {
+            capitalize: function(value) {
+                if (!value) return '';
+                value = value.toString();
+                return value.charAt(0).toUpperCase() + value.slice(1);
+            }
+        }
+    });
+</script>
