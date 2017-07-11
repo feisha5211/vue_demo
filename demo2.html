@@ -1,0 +1,23 @@
+<script src="./vue.js"></script>
+
+<div id="example">
+
+</div>
+<script>
+    var data = {
+        a: 1
+    };
+    var vm = new Vue({
+        el: '#example',
+        data: data,
+        created: function() {
+            console.log('a is ' + this.a);
+        },
+    });
+    console.log(vm.$data === data);
+    console.log(vm.$el === document.getElementById('example'));
+    vm.$watch('a', function(newVal, oldVal) {
+        console.log(vm.a, 1111);
+    });
+    vm.a = 11;
+</script>
