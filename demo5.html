@@ -1,0 +1,58 @@
+<script src="vue.js"></script>
+<style>
+	div{
+		width: 100px;
+		height: 100px;
+	}
+	.base {
+		border: 1px solid red;
+	}
+	.active{
+		background: red;
+	}
+	.text-danger{
+		color: blue;
+	}
+</style>
+
+<div v-bind:class="classObj" class="base">
+	noao
+</div>
+
+<div id="div1" v-bind:class="[activeClass, errorClass]">
+	color
+</div>
+
+<div id="div2" v-bind:class="[isActive ? activeClass : '', errorClass]"></div>
+
+<script>
+	
+	var div = new Vue({
+		el: 'div',
+		data: {
+			isActive: true,
+			// error: {type : 'fatal'}
+			error: null
+		},
+		computed: {
+			classObj: function() {
+				return {
+					active: this.isActive && !this.error,
+					'text-danger': this.error && this.error.type === 'fatal'
+				}
+			}
+		}
+	});
+
+	var div1 = new Vue({
+		el: '#div1',
+		data:{
+			activeClass: 'active',
+			errorClass:'text-danger'
+		}
+	});
+
+	var div2 = new Vue({
+		el:
+	});
+</script>
