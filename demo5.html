@@ -23,10 +23,12 @@
 	color
 </div>
 
-<div id="div2" v-bind:class="[isActive ? activeClass : '', errorClass]"></div>
+<div id="div2" v-bind:class="[isActive ? activeClass : '', errorClass]">div2</div>
+
+<div id="div3" v-bind:class="[{active: isActive}, errorClass]">div3</div>
 
 <script>
-	
+	// 返回计算属性
 	var div = new Vue({
 		el: 'div',
 		data: {
@@ -44,6 +46,7 @@
 		}
 	});
 
+	// 数组语法
 	var div1 = new Vue({
 		el: '#div1',
 		data:{
@@ -52,7 +55,22 @@
 		}
 	});
 
+	// 三元表达式
 	var div2 = new Vue({
-		el:
+		el: '#div2',
+		data: {
+			isActive: false,
+			activeClass: 'active',
+			errorClass:'text-danger'
+		}
+	});
+
+	// 数组语法
+	var div3 = new Vue({
+		el: '#div3',
+		data: {
+			isActive: true,
+			errorClass:'text-danger',
+		}
 	});
 </script>
