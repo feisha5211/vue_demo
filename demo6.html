@@ -1,0 +1,108 @@
+<!-- 条件渲染 -->
+<script src="vue.js"></script>
+
+<div id="div1">
+	<h1 v-if="ok">Yes</h1>
+	<h1 v-else>No</h1>
+
+	<template v-if="is_ok">
+		<h1>title</h1>
+		<p>paragraph 1</p>
+		<p>paragraph 2</p>
+	</template>
+
+	<div v-if="Math.random() > 0.5">
+    	Now you see me
+	</div>
+	<div v-else>
+    	Now you don't
+	</div>
+</div>
+
+<div id="div2">
+	<div v-if="type === 'A'">
+		A
+	</div>
+	<div v-else-if="type === 'B'">
+		B
+	</div>
+	<div v-else-if="type === 'C'">
+		C
+	</div>
+	<div v-else>
+		Not A/B/C
+	</div>
+</div>
+
+<div id="div3">
+	<template v-if="loginType==='username'">
+		<label>Username</label>
+		<input placeholder="请输入用户名"></input>
+	</template>
+	<template v-else>
+		<label>Email</label>
+		<input placeholder="请输入邮箱">
+	</template>
+
+	<button v-on:click="clickbtn" style="display: block;">切换登录方式</button>
+
+	<template v-if="loginT==='username'">
+		<label>Username</label>
+		<input placeholder="请输入用户名" key="username-input"></input>
+	</template>
+	<template v-else>
+		<label>Email</label>
+		<input placeholder="请输入邮箱" key="email-input">
+	</template>
+
+	<button @click="clickbtn2" style="display: block;">切换登录方式</button>
+</div>
+
+<div id="v-show">
+	<h1 v-show="ok">Hello!</h1>
+</div>
+
+<script>
+	// 简单的条件渲染、模板渲染
+	var h1 = new Vue({
+		el: '#div1',
+		data: {
+			ok: false,
+			is_ok: false
+		}
+	});
+
+	// v-else-if
+	var div2 = new Vue({
+		el: "#div2",
+		data: {
+			type: 'e'
+		}
+	});
+
+	// key管理可复用的元素
+	var div3 = new Vue({
+		el: "#div3",
+		data: {
+			loginType: 'username',
+			loginT: 'email',
+		},
+		methods:{
+			clickbtn: function() {
+				this.loginType = this.loginType == 'username' ? 'email' : 'username';
+ 			},
+ 			clickbtn2: function() {
+				this.loginT = this.loginT == 'username' ? 'email' : 'username';
+ 			}
+		}
+	});
+
+	// v-show指令
+	var v_show = new Vue({
+		el: "#v-show",
+		data: {
+			ok: false
+		}
+	})
+
+</script>
