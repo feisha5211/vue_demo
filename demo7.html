@@ -23,6 +23,24 @@
 	<div v-for="(value, key, index) in person"> {{index}}. {{ key }} : {{ value }}</div>
 </ul>
 
+<div id="example-4">
+	<span v-for="n in 10">{{ n }}</span>
+</div>
+
+<div id="todo-list-example">
+	<input v-model="newTodoText" v-on:keyup.enter="addNewTodo" placeholder="Add a todo">
+	<ul>
+		<li is="todo-item" v-for="(todo, index) in todos" v-bind:key="todo.id" v-bind:title="todo.title" v-on:remove="todos.splice(index, 1)"></li>
+	</ul>
+</div>
+
+<div id="example-5">
+	<ul v-if="shouldRenderTodos">
+		<li v-for="todo in todos" v-if="!todo.isComplete">{{ todo.title }}</li>
+	</ul>
+
+</div>
+
 <script>
 	// 列表渲染基本用法
 	var example1 = new Vue({
@@ -71,4 +89,56 @@
 		}	
 	});
 
+	// 整数迭代
+	var example4 = new Vue({
+		el: '#example-4',
+	});
+
+	// 组件和v-for
+	Vue.component('todo-item', {
+		template: '<li>{{ title }} <button type="button" v-on:click="$emit(\'remove\')">X</button></li>',
+		props: ['title']
+	});
+
+	new Vue({
+		el: '#todo-list-example',
+		data: {
+			newTodoText: '',
+			todos: [
+				{
+					id: 1,
+					title: 'Do the dishes',
+				},
+				{
+					id: 2,
+					title: 'Take out the trash',
+				},
+				{
+					id: 3,
+					title: 'Now the lawn',
+				}
+			],
+			nextTodoId: 4
+		},
+		methods: {
+			addNewTodo: function() {
+				this.todos.push({id: this.nextTodoId, title: this.newTodoText});
+				this.newTodoText = '';
+			}
+		}
+	});
+
+
+	var example5 = new Vue({
+		el: "#example-5",
+		data: {
+			shouldRenderTodos: true,
+			todos: [
+				{title: 'A', isComplete: true},
+				{title: 'B', isComplete: false},
+				{title: 'C', isComplete: true},
+			]
+		}
+	
+	})
 </script>
