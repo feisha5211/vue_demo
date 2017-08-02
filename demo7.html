@@ -1,0 +1,74 @@
+<script src="vue.js"></script>
+
+<ul id="example-1">
+	<li v-for="item in items">{{ item.message }}</li>
+</ul>
+
+<ul id="example-2">
+	<li v-for="(item, index) in items">
+		{{ parentMessage }} - {{ index }} - {{ item.message }}
+	</li>
+</ul>
+
+<ul id="example-3">
+	<template v-for="item in items">
+		<li>{{ item.msg }}</li>
+		<li class="divider"></li>
+	</template>
+</ul>
+
+<ul id="repeat-object" class="demo">
+	<li v-for="value in person"> {{ value }} </li>
+	<div v-for="(value, key) in person"> {{ key }} : {{ value }}</div>
+	<div v-for="(value, key, index) in person"> {{index}}. {{ key }} : {{ value }}</div>
+</ul>
+
+<script>
+	// 列表渲染基本用法
+	var example1 = new Vue({
+		el: '#example-1',
+		data: {
+			items: [
+				{message: 'Foo'},
+				{message: 'Bar'},
+			]
+		}
+	});
+
+	// 访问父级属性,自身的索引
+	var example2 = new Vue({
+		el: "#example-2",
+		data: {
+			parentMessage: 'Parent',
+			items: [
+				{ message: 'Foo'},
+				{ message: 'Bar'},
+			]			
+		}
+	});
+
+	// template v-for
+	var example3 = new Vue({
+		el: '#example-3',
+		data: {
+			items: [
+				{msg : 1},
+				{msg : 2},
+				{msg : 3},
+			]	
+		}
+	});
+
+	// 对象迭代 v-for
+	var repeat_obj = new Vue({
+		el: "#repeat-object",
+		data: {
+			person: {
+				firstName: 'John',
+				lastName: 'Doe',
+				age: 30
+			}
+		}	
+	});
+
+</script>
