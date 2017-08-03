@@ -39,7 +39,15 @@
 		<li v-for="todo in todos" v-if="!todo.isComplete">{{ todo.title }}</li>
 	</ul>
 
+	<ul>
+		<li v-for="n in evenNumbers">{{ n }}</li>
+	</ul>
+	<ul>
+		<li v-for="n in even(numbers)">{{ n }}</li>
+	</ul>
 </div>
+
+
 
 <script>
 	// 列表渲染基本用法
@@ -128,7 +136,7 @@
 		}
 	});
 
-
+	// v-for与v-if
 	var example5 = new Vue({
 		el: "#example-5",
 		data: {
@@ -137,8 +145,36 @@
 				{title: 'A', isComplete: true},
 				{title: 'B', isComplete: false},
 				{title: 'C', isComplete: true},
-			]
+			],
+			numbers:[1,2,3,4,5,6,7],
+		},
+		computed: {
+			evenNumbers: function() {
+				return this.numbers.filter(function(number){
+					return number % 2 === 0;
+				});
+			}
+		},
+		methods: {
+			even: function(numbers) {
+				return numbers.filter(function(number){
+					return number % 2 === 0;
+				});
+			}
 		}
+	});
+
+	// 重塑数组,过滤
+	// example1.items = example1.items.filter(function(item) {
+		// return item.message.match(/Foo/);
+	// });
+
+	// 设置一个项的索引,对于索引没有限制
+	example1.items.splice(6, 1, {message: 'Zoo'});
+	// Vue.set方法只能设置已存在的索引值,或者数组长度的索引值,如果在末尾添加,建议用push
+	Vue.set(example1.items, example1.items.length, {message: 'Acd'});
+	// 改变数组的长度(貌似只有减少时候可以用,并不能增加长度)
+	// example1.items.splice(1);
 	
-	})
+
 </script>
