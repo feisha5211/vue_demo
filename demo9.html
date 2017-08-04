@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>表单控件绑定</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+    <div id="example-1">
+        <input type="text" :value="message" v-model="message" placeholder="edit me">
+        <p>Message is: {{ message }}</p>
+    </div>
+
+    <div id="example-2">
+        <span>Multiline message is:</span>
+        <p style="white-space: pre-line"> {{ message }} </p>
+        <br>
+        <textarea v-model="message" placeholder="add multiple lines"></textarea>
+    </div>
+
+    <div id="example-3">
+        <input type="checkbox" id="checkbox" v-model="checked">
+        <label for="checkbox"> {{ checked }}</label>
+        <hr>
+        <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
+        <label for="jack">Jack</label>
+        <input type="checkbox" id="john" value="John" v-model="checkedNames">
+        <label for="john">John</label>
+        <input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
+        <label for="mike">Mike</label>
+        <br>
+        <span>Checked names: {{ checkedNames }}</span>
+    </div>
+
+    <hr>
+
+    <div id="example-4">
+        <input type="radio" id="one" value="One" v-model="picked">
+        <label for="one">One</label>
+        <br>
+        <input type="radio" id="two" value="Two" v-model="picked">
+        <label for="two">Two</label>
+        <br>
+        <span>Picked: {{ picked }}</span>
+    </div>
+
+    <div id="example-5">
+        <select v-model="selected">
+            <option value="" disabled>请选择</option>
+            <option>A</option>
+            <option>B</option>
+            <option>C</option>
+        </select>
+        <span>Selected: {{ selected }}</span>
+    </div>
+
+    <div id="example-6">
+        <select v-model="selected" multiple style="width: 50px;">
+            <option>A</option>
+            <option>B</option>
+            <option>C</option>
+        </select>
+        <br>
+        <span>Selected: {{ selected }}</span>
+    </div>
+
+    <div id="example-7">
+        <select v-model="selected">
+            <option v-for="option in options" :value="option.value">{{ option.text }}</option>
+        </select>
+        <span>Selected: {{ selected }}</span>
+    </div>
+
+    <div id="example-8">
+        <input type="checkbox" v-model="toggle" :true-value="a" :false-value="b">
+        <span>Checked: {{ toggle }}</span>
+        <hr>
+        
+        <input type="radio" id="a1"v-model="pick" :value="a1">
+        <label for="a1">a1</label>
+        <input type="radio" id="a2" v-model="pick" :value="a2">
+        <label for="a2">a2</label>
+        <span>Picked: {{ pick }}</span>
+        <hr>
+
+        <select v-model="selected">
+            <option :value="{number: 123}">123</option>
+        </select>
+    </div>
+    <hr>
+
+    <div id="example-9">
+        <input type="text" v-model.lazy="input1">
+        <span>One.lazy: {{ input1 }}</span>
+        <input type="text" v-model="input1">
+        <span>One: {{ input1 }}</span>
+        <hr>
+        <input type="number" v-model.number="age">
+        <span>age: {{ age }}</span>
+        <hr>
+        <input type="text" v-model.trim="msg">
+        <span>msg.trim: {{ msg }}</span>
+        <input type="text" v-model="msg1">
+        <span>msg1: {{ msg1 }}</span>
+    </div>
+
+    <script>
+        // 文本
+        var example1 = new Vue({
+            el: '#example-1',
+            data: {
+                message: '1'
+            }
+        });
+
+        // 多行文本
+        var example2 = new Vue({
+            el: '#example-2',
+            data: {
+                message: '111'
+            }
+        });
+
+        // 复选框
+        var example3 = new Vue({
+            el: '#example-3',
+            data: {
+                checked: true,
+                // 多个checkbox时,数组中的值为input的value值
+                checkedNames:['Mike']
+            }
+        });
+
+        // 单选框
+        var example4 = new Vue({
+            el: '#example-4',
+            data: {
+                picked:'One'
+            }
+        });
+
+        // 下拉列表
+        var example5 = new Vue({
+            el: '#example-5',
+            data: {
+                selected: 'A'
+            }
+        });
+
+        // 多选下拉列表, 类似checkbox多选
+        var example6 = new Vue({
+            el: '#example-6',
+            data: {
+                selected: ['A', 'B']
+            }
+        });
+
+        // 动态渲染下拉列表
+        var example7 = new Vue({
+            el: '#example-7',
+            data: {
+                selected: 'B',
+                options: [
+                    {text: 'One', value: 'A'},
+                    {text: 'Two', value: 'B'},
+                    {text: 'Three', value: 'C'},
+                ]
+            }
+        });
+
+        // 动态绑定value,将value放于data中
+        var example8 = new Vue({
+            el: '#example-8',
+            data: {
+                toggle: '',
+                a: 'a',
+                b: 'b',
+                pick: {a: 1, b: 2},
+                a1: {a:1, b:3},
+                a2: {a:1, b:2},
+                selected:''
+            }
+        });
+
+        /*
+            修饰符
+            .lazy input内容在change事件中同步,默认在input事件中同步
+            .trim 自动过滤用户输入的首位字符的空格
+            .number 将用户输入自动转换为Number类型
+         */
+        var example9 = new Vue({
+            el: '#example-9',
+            data: {
+                input1:'',
+                age: '',
+                msg: '',
+                msg1: ''
+            }
+        });
+    </script>
+</body>
+</html>
