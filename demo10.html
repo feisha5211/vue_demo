@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>组件</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+    <div id="example-1">
+        <my-component></my-component>
+    </div>
+
+    <div id="example-2">
+        <child-component></child-component>
+    </div>
+
+    <table id="table">
+        <tr is="my-row" v-for="n in 10" :msg="n"></tr>
+    </table>
+
+    <div id="example-3">
+        <simple-counter></simple-counter>
+        <simple-counter></simple-counter>
+        <simple-counter></simple-counter>
+    </div>
+
+    <div id="example-4">
+        <child v-for="n in 10" :my-message="n"></child>
+        <br>
+        <input type="text" v-model="parentMsg">
+        <br>
+        <child :my-message="parentMsg"></child>
+    </div>
+
+    <div id="counter-event-example">
+        <p>{{ total }}</p>
+        <button-counter @increment="incTotal"></button-counter>
+        <button-counter @increment="incTotal"></button-counter>
+    </div>
+
+    <script>
+        // 注册组件(全局组件)
+        Vue.component('my-component', {
+            template: '<div>A custom component!</div>'
+        });
+
+        // 创建根实例
+        new Vue({
+            el: '#example-1'
+        });
+
+        var child = {
+            template: '<div>A child component!</div>'
+        }
+
+        // 局部注册组件
+        new Vue({
+            el: '#example-2',
+            components: {
+                'child-component': child
+            }
+        });
+
+        Vue.component('my-row', {
+            props:['msg'],
+            template: '<tr><td>{{msg}}</td></tr>',
+            data: function () {
+                return {message: 'hello'};
+            },
+        });
+
+        new Vue({
+            el: '#table',
+        });
+
+        Vue.component('simple-counter', {
+            template: '<button @click="counter += 1">{{ counter }}</button>',
+            data: function () {
+                return {counter: 0};
+            }
+        });
+
+        new Vue({
+            el: '#example-3'
+        });
+
+        // 向子组件内传递数据, props,在html中需要用kebab-case命名方式绑定属性
+        Vue.component('child', {
+            props: ['myMessage'],
+            template: '<span>{{ myMessage }}</span>'
+        });
+
+        new Vue({
+            el: '#example-4',
+            data: {
+                parentMsg: ''
+            }
+        });
+
+        // 子组件向父组件传参,在父组件上绑定监听事件
+        Vue.component('button-counter', {
+            template: '<button @click="increment">{{ counter }}</button>',
+            data: function () {
+                return {counter: 0};
+            },
+            methods: {
+                increment: function () {
+                    this.counter++;
+                    this.$emit('increment');
+                }
+            }
+        });
+
+        new Vue({
+            el: '#counter-event-example',
+            data: {
+                total: 0
+            },
+            methods: {
+                incTotal: function() {
+                    this.total++;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
