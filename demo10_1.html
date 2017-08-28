@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>自定义组件实现结算</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+
+    <div id="app">
+        <currency-input label="Price" v-model="price"></currency-input>
+        <currency-input label="Shipping" v-model="shipping"></currency-input>
+        <currency-input label="Handling" v-model="handling"></currency-input>
+        <currency-input label="Discount" v-model="discount"></currency-input>
+
+        <p>Total: ${{ total }}</p>
+    </div>
+
+    <script>
+        Vue.component('currency-input', {
+            template: '\
+                <div>\
+                    <label v-if="label">{{ label }}</label>\
+                    $\
+                    <input\
+                        ref="input"\
+                        :value="value"\
+                        @input="updateValue($event.target.value)"\
+                        @focus="selectAll"\
+                        @blur="formatValue"\
+                    >\
+                </div>\
+            ',
+            props: {
+                value: {
+                    type: Number,
+                    default: 0
+                },
+                label: {
+                    type: String,
+                    default: ''
+                }
+            },
+            mounted: function () {
+                this.formatValue();
+            },
+            methods: {
+                updateValue: function (value) {
+                    var formattedValue = value.trim().slice(0, value.indexOf('.') + 3);
+                    if (formattedValue !== value) {
+                        this.$refs.input.value = formattedValue;
+                    }
+                    this.$emit('input', Number(formattedValue));
+                },
+                formatValue: function () {
+                    this.$refs.input.value = this.value;
+                },
+                selectAll: function (event) {
+                    setTimeout(function () {
+                        event.target.select();
+                    }, 0)
+                }
+            }
+        });
+
+        new Vue({
+           el: '#app',
+           data: {
+               price: 0,
+               shipping: 0,
+               handling: 0,
+               discount: 0
+           },
+           computed: {
+               total: function () {
+                   return ((
+                       this.price * 100 +
+                       this.shipping * 100 +
+                       this.handling * 100 -
+                       this.discount * 100
+                       ) /100).toFixed(2);
+               }
+           }
+        });
+    </script>
+
+</body>
+</html>

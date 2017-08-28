@@ -41,6 +41,11 @@
         <button-counter @increment="incTotal"></button-counter>
         <abc-test @click.native="nativeClick"></abc-test>
     </div>
+    <hr>
+
+    <div id="example-5">
+        <currency-input v-model="price"></currency-input>
+    </div>
 
     <script>
         // 注册组件(全局组件)
@@ -136,10 +141,23 @@
 
 
         Vue.component('currency-input', {
-            template: '<span><input ref="input" :value="value" @input="updateValue($event.target.value)"></span>',
+            template: '<span>$<input ref="input" :value="value" @input="updateValue($event.target.value)"></span>',
             props: ['value'],
             methods: {
+                updateValue: function (value) {
+                    var formattedValue = value.trim().slice(0, value.indexOf('.')+ 3);
+                    if (formattedValue !== value) {
+                        this.$refs.input.value = formattedValue;
+                    }
+                    this.$emit('input', Number(formattedValue));
+                }
+            }
+        });
 
+        var example5 = new Vue({
+            el: '#example-5',
+            data: {
+                price: ''
             }
         });
     </script>

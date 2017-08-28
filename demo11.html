@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>响应式原理</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+    <div id="example">
+        <h1>{{ message }}</h1>
+        <example></example>
+    </div>
+
+    <script>
+        Vue.component('example', {
+            template: '<div><span>{{ message }}</span><button type="button" @click="updateMessage">更新</button></div>',
+            data: function () {
+                return {
+                    message: 'not updated'
+                }
+            },
+            methods: {
+                updateMessage: function() {
+                    this.message = 'updated';
+                    console.log(this.$el.textContent);
+                    this.$nextTick(function() {
+                        console.log(this.$el.textContent);
+                    });
+                }
+            }
+        });
+
+        var vm = new Vue({
+            el: '#example',
+            data: {
+                message: '123'
+            },
+            components: ['example']
+        });
+
+
+        vm.message = 'new message';
+        console.log(vm.$el.textContent === 'new message');
+        Vue.nextTick(function () {
+            console.log(vm.$el.textContent === 'new message');
+        });
+
+
+    </script>
+</body>
+</html>
