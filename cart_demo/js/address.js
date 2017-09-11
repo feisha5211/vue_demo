@@ -4,6 +4,7 @@ var vm = new Vue({
 		limit: 3,
 		addrList: [],
         currentIndex: 0,
+		shippingMethod: 1,
 	},
 	mounted: function () {
 		this.$nextTick(function () {
